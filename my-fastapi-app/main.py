@@ -1,20 +1,35 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from pydantic import BaseModel
 import motor.motor_asyncio
+import asyncio
 
 app = FastAPI()
 
 # Connect to Mongo Atlas
-client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://quinqui8311:<db_password>@gamedatabse.egeonsl.mongodb.net/?retryWrites=true&w=majority&appName=GameDatabse")
-db = client.game_assets_db
+client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://quinqui8311:ppZDu0aowfnMxcnm@gamedatabse.egeonsl.mongodb.net/?retryWrites=true&w=majority&appName=GameDatabse")
+db = client.game_assets_db #get the database you want to insert into
 
+#get the available database names in the cluster for debug purposes
+async def debug_db_names():
+    names = await client.list_database_names()
+    print("Available databases:", names)
+
+asyncio.create_task(debug_db_names())
+
+#structure of the player score inside the scores collection
 class PlayerScore(BaseModel):
     player_name: str
     score: int
 
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+
 @app.post("/upload_sprite")
 async def upload_sprite(file: UploadFile = File(...)):
     # In a real application, the file should be saved to a storage service
+    print(f"Filename: {file.filename} Content: {file.content_type}")
     content = await file.read()
     sprite_doc = {"filename": file.filename, "content": content}
     result = await db.sprites.insert_one(sprite_doc)
@@ -22,6 +37,7 @@ async def upload_sprite(file: UploadFile = File(...)):
 
 @app.post("/upload_audio")
 async def upload_audio(file: UploadFile = File(...)):
+    print(f"Filename: {file.filename} Content: {file.content_type}")
     content = await file.read()
     audio_doc = {"filename": file.filename, "content": content}
     result = await db.audio.insert_one(audio_doc)
