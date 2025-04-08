@@ -10,11 +10,11 @@ client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://quinqui8311:ppZDu
 db = client.game_assets_db #get the database you want to insert into
 
 #get the available database names in the cluster for debug purposes
-async def debug_db_names():
-    names = await client.list_database_names()
-    print("Available databases:", names)
+# async def debug_db_names():
+#     names = await client.list_database_names()
+#     print("Available databases:", names)
 
-asyncio.create_task(debug_db_names())
+# asyncio.create_task(debug_db_names())
 
 #structure of the player score inside the scores collection
 class PlayerScore(BaseModel):

@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="536860a7-a274-41d5-864f-74fc2b494ad3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/my-fastapi-app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/my-fastapi-app/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="536860a7-a274-41d5-864f-74fc2b494ad3" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
