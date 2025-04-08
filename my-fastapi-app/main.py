@@ -25,7 +25,6 @@ class PlayerScore(BaseModel):
 async def root():
     return {"message": "Hello World"}
 
-
 @app.post("/upload_sprite")
 async def upload_sprite(file: UploadFile = File(...)):
     # In a real application, the file should be saved to a storage service
