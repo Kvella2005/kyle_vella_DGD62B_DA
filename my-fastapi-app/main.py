@@ -246,3 +246,95 @@ async def delete_score(score_id: str):
         raise HTTPException(status_code=404, detail="Score not found")
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid score ID: {str(e)}")
+    
+# PUT methods for updating resources
+@app.put("/player_scores/update/{score_id}")
+async def update_score(score_id: str, score: PlayerScore):
+    """
+    Update a player score by its ID
+    """
+    try:
+        # Check if the score exists
+        existing_score = await db.scores.find_one({"_id": ObjectId(score_id)})
+        if not existing_score:
+            raise HTTPException(status_code=404, detail="Score not found")
+        
+        # Update the score
+        result = await db.scores.update_one(
+            {"_id": ObjectId(score_id)},
+            {"$set": score.dict()}
+        )
+        
+        if result.modified_count:
+            return {"message": "Score updated successfully"}
+        return {"message": "No changes applied"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error updating score: {str(e)}")
+
+@app.put("/sprites/update/{sprite_id}")
+async def update_sprite(sprite_id: str, file: UploadFile = File(...)):
+    """
+    Update a sprite by its ID by uploading a new file
+    """
+    try:
+        # Check if the sprite exists
+        existing_sprite = await db.sprites.find_one({"_id": ObjectId(sprite_id)})
+        if not existing_sprite:
+            raise HTTPException(status_code=404, detail="Sprite not found")
+        
+        # Validate file type
+        if not file.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="File must be an image")
+        
+        # Read new file content
+        content = await file.read()
+        
+        # Update the sprite
+        result = await db.sprites.update_one(
+            {"_id": ObjectId(sprite_id)},
+            {"$set": {
+                "filename": file.filename,
+                "content": content,
+                "content_type": file.content_type
+            }}
+        )
+        
+        if result.modified_count:
+            return {"message": "Sprite updated successfully"}
+        return {"message": "No changes applied"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error updating sprite: {str(e)}")
+
+@app.put("/audio/update/{audio_id}")
+async def update_audio(audio_id: str, file: UploadFile = File(...)):
+    """
+    Update an audio file by its ID by uploading a new file
+    """
+    try:
+        # Check if the audio file exists
+        existing_audio = await db.audio.find_one({"_id": ObjectId(audio_id)})
+        if not existing_audio:
+            raise HTTPException(status_code=404, detail="Audio file not found")
+        
+        # Validate file type
+        if not file.content_type.startswith('audio/'):
+            raise HTTPException(status_code=400, detail="File must be an audio file")
+        
+        # Read new file content
+        content = await file.read()
+        
+        # Update the audio file
+        result = await db.audio.update_one(
+            {"_id": ObjectId(audio_id)},
+            {"$set": {
+                "filename": file.filename,
+                "content": content,
+                "content_type": file.content_type
+            }}
+        )
+        
+        if result.modified_count:
+            return {"message": "Audio file updated successfully"}
+        return {"message": "No changes applied"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error updating audio file: {str(e)}")
