@@ -11,7 +11,7 @@ from bson.objectid import ObjectId
 app = FastAPI()
 
 #get the .env file which provides the connection string with the read/write user access
-load_dotenv()
+#load_dotenv()
 
 # Connect to Mongo Atlas with read/write access
 #connectionString = os.environ.get("MONGODBSTRING")
