@@ -23,7 +23,7 @@ class PlayerScore(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": db.name}
 
 @app.post("/upload_sprite")
 async def upload_sprite(file: UploadFile = File(...)):
