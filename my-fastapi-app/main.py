@@ -44,21 +44,6 @@ async def upload_audio(file: UploadFile = File(...)):
 
 @app.post("/player_score")
 async def add_score(score: PlayerScore):
-    try:
-        # Create score document
-        score_doc = {
-            "player_name": score.player_name,
-            "score": score.score
-        }
-        
-        # Insert with timeout
-        result = await asyncio.wait_for(
-            db.scores.insert_one(score_doc),
-            timeout=30.0  # 30 second timeout
-        )
-        
-        return {"message": "Score recorded", "id": str(result.inserted_id)}
-    except asyncio.TimeoutError:
-        raise HTTPException(status_code=504, detail="Database operation timed out")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    score_doc = score.dict()
+    result = await db.scores.insert_one(score_doc)
+    return {"message": "Score recorded", "id": str(result.inserted_id)}
