@@ -14,13 +14,13 @@ app = FastAPI()
 load_dotenv()
 
 # Connect to Mongo Atlas with read/write access
-#connectionString = os.environ.get("MONGODBSTRING")
+connectionString = os.environ.get("MONGODBSTRING")
 
 # Connect to Mongo Atlas
-#client = motor.motor_asyncio.AsyncIOMotorClient(connectionString)
+client = motor.motor_asyncio.AsyncIOMotorClient(connectionString)
 
 #for debug purposes
-client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://quinqui8311:ppZDu0aowfnMxcnm@gamedatabse.egeonsl.mongodb.net/?retryWrites=true&w=majority&appName=GameDatabse")
+#client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://quinqui8311:ppZDu0aowfnMxcnm@gamedatabse.egeonsl.mongodb.net/?retryWrites=true&w=majority&appName=GameDatabse")
 
 
 db = client.game_assets_db #get the database you want to insert into
