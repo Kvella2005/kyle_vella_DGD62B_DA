@@ -208,7 +208,7 @@ async def get_top_scores(limit: int = 10):
     return scores
 
 # Add ability to delete files and scores
-@app.delete("/sprites/{sprite_id}")
+@app.delete("/sprites/del/{sprite_id}")
 async def delete_sprite(sprite_id: str):
     """
     Delete a sprite by its ID
@@ -221,7 +221,7 @@ async def delete_sprite(sprite_id: str):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid sprite ID: {str(e)}")
 
-@app.delete("/audio/{audio_id}")
+@app.delete("/audio/del/{audio_id}")
 async def delete_audio(audio_id: str):
     """
     Delete an audio file by its ID
@@ -234,7 +234,7 @@ async def delete_audio(audio_id: str):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid audio ID: {str(e)}")
 
-@app.delete("/player_scores/{score_id}")
+@app.delete("/player_scores/del/{score_id}")
 async def delete_score(score_id: str):
     """
     Delete a player score by its ID
