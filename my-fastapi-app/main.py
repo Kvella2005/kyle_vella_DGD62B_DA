@@ -37,12 +37,12 @@ class PlayerScore(BaseModel):
     player_name: str
     score: int
 
-# Structure for file responses without the binary content
+# Structure for file metadata
 class FileMetadata(BaseModel):
     id: str
     filename: str
     
-# Structure for scores response
+# Structure to return score details
 class ScoreResponse(BaseModel):
     id: str
     player_name: str
@@ -243,7 +243,11 @@ async def upload_sprite(file: UploadFile = File(...)):
     print(f"Filename: {file.filename} Content: {file.content_type}")
     content = await file.read()
     sprite_doc = {"filename": file.filename, "content": content, "content_type": file.content_type}
+
+    #remove any characters vulnerable on each item values to sql injection
     sprite_doc_sanatised = prevent_nosql_injection(sprite_doc)
+
+    #insert the sanitised the sprite dictionary
     result = await db.sprites.insert_one(sprite_doc_sanatised)
     return {"message": "Sprite uploaded", "id": str(result.inserted_id)}
 
